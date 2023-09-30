@@ -2,11 +2,14 @@ package bg.softuni.pathfinder.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
+
+    private int age;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -16,7 +19,10 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String email;
 
-    @ManyToMany
+    @Enumerated(EnumType.STRING)
+    private Level level;
+
+    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(
 //            name = "users_roles",
 //            joinColumns = {@JoinColumn(name = "user_id")},
@@ -24,8 +30,18 @@ public class User extends BaseEntity {
 //    )
     private Set<Role> roles;
 
-    @Enumerated(EnumType.STRING)
-    private Level level;
+
+    public User() {
+        this.roles = new HashSet<>();
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     public String getUsername() {
         return username;
@@ -59,19 +75,19 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public Set<Role> getRole() {
-        return roles;
-    }
-
-    public void setRole(Set<Role> role) {
-        this.roles = role;
-    }
-
     public Level getLevel() {
         return level;
     }
 
     public void setLevel(Level level) {
         this.level = level;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

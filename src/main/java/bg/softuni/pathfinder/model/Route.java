@@ -2,12 +2,15 @@ package bg.softuni.pathfinder.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "routes")
 public class Route extends BaseEntity{
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
     @Column(columnDefinition = "LONGTEXT")
     private String gpxCoordinates;
     @Enumerated(EnumType.STRING)
@@ -21,6 +24,26 @@ public class Route extends BaseEntity{
 
     @ManyToMany
     private Set<Category> categories;
+
+    public Route() {
+        this.categories = new HashSet<>();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
 
     public User getAuthor() {
         return author;
