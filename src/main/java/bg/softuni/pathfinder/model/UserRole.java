@@ -1,6 +1,6 @@
 package bg.softuni.pathfinder.model;
 
-public enum UserType {
+public enum UserRole {
 
     USER, MODERATOR, ADMIN
 }
