@@ -1,5 +1,6 @@
 package bg.softuni.pathfinder.model;
 
+import bg.softuni.pathfinder.model.enums.CategoryName;
 import jakarta.persistence.*;
 
 @Entity

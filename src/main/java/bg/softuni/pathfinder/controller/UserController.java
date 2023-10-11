@@ -1,13 +1,15 @@
 package bg.softuni.pathfinder.controller;
 
-import bg.softuni.pathfinder.model.User;
+import bg.softuni.pathfinder.model.dto.UserRegisterDTO;
 import bg.softuni.pathfinder.service.UserService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
-@RestController
+@Controller
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -16,8 +18,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/all")
-    public List<User> getAll() {
-        return userService.getAll();
+    @GetMapping("/login")
+    public ModelAndView login() {
+        return new ModelAndView("login");
+    }
+
+    @GetMapping("/register")
+    public ModelAndView register() {
+        return new ModelAndView("register");
+    }
+
+    @PostMapping("/register")
+    public ModelAndView register(UserRegisterDTO userRegisterDTO) {
+
+        userService.register(userRegisterDTO);
+        return new ModelAndView("redirect:login");
     }
 }
