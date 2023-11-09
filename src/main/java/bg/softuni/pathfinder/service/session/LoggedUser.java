@@ -8,6 +8,7 @@ public class LoggedUser {
     private String username;
     private String email;
     private String fullName;
+    private boolean isLogged;
 
     public String getUsername() {
         return username;
@@ -33,9 +34,18 @@ public class LoggedUser {
         this.fullName = fullName;
     }
 
+    public boolean isLogged() {
+        return isLogged;
+    }
+
+    public void setLogged(boolean logged) {
+        isLogged = logged;
+    }
+
     public void reset() {
         setUsername(null);
         setEmail(null);
         setFullName(null);
+        setLogged(false);
     }
 }

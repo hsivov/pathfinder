@@ -85,4 +85,8 @@ public class Route extends BaseEntity{
     public void setAuthor(User author) {
         this.author = author;
     }
+
+    public void addCategories(Set<Category> categories) {
+        this.categories.addAll(categories);
+    }
 }
