@@ -1,12 +1,12 @@
 package bg.softuni.pathfinder.service;
 
-import bg.softuni.pathfinder.model.dto.UserLoginDTO;
-import bg.softuni.pathfinder.model.dto.UserRegisterDTO;
+import bg.softuni.pathfinder.model.dto.UserLoginBindingModel;
+import bg.softuni.pathfinder.model.dto.UserRegisterBindingModel;
 
 public interface AuthenticationService {
-    void register(UserRegisterDTO userRegisterDTO);
+    boolean register(UserRegisterBindingModel userRegisterBindingModel);
 
-    boolean login(UserLoginDTO userLoginDTO);
+    boolean login(UserLoginBindingModel userLoginBindingModel);
 
     void logout();
 }

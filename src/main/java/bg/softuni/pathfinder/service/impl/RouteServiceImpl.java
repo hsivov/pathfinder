@@ -3,7 +3,7 @@ package bg.softuni.pathfinder.service.impl;
 import bg.softuni.pathfinder.model.Category;
 import bg.softuni.pathfinder.model.Route;
 import bg.softuni.pathfinder.model.User;
-import bg.softuni.pathfinder.model.dto.AddRouteDTO;
+import bg.softuni.pathfinder.model.dto.AddRouteBindingModel;
 import bg.softuni.pathfinder.repository.CategoryRepository;
 import bg.softuni.pathfinder.repository.RouteRepository;
 import bg.softuni.pathfinder.service.RouteService;
@@ -29,11 +29,11 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public void add(AddRouteDTO addRouteDTO) {
-        Route route = modelMapper.map(addRouteDTO, Route.class);
+    public void add(AddRouteBindingModel addRouteBindingModel) {
+        Route route = modelMapper.map(addRouteBindingModel, Route.class);
         route.getCategories().clear();
 
-        Set<Category> categories = categoryRepository.findByNameIn(addRouteDTO.getCategories());
+        Set<Category> categories = categoryRepository.findByNameIn(addRouteBindingModel.getCategories());
         route.addCategories(categories);
 
         User user = userService.getLoggedUser();

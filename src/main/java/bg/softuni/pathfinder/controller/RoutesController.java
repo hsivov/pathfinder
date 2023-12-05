@@ -1,6 +1,6 @@
 package bg.softuni.pathfinder.controller;
 
-import bg.softuni.pathfinder.model.dto.AddRouteDTO;
+import bg.softuni.pathfinder.model.dto.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.enums.CategoryName;
 import bg.softuni.pathfinder.model.enums.Level;
 import bg.softuni.pathfinder.service.RouteService;
@@ -31,8 +31,8 @@ public class RoutesController {
     }
 
     @PostMapping("/add")
-    public ModelAndView addRoute(AddRouteDTO addRouteDTO) {
-        routeService.add(addRouteDTO);
+    public ModelAndView addRoute(AddRouteBindingModel addRouteBindingModel) {
+        routeService.add(addRouteBindingModel);
 
         return new ModelAndView("redirect:/");
     }

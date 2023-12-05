@@ -1,8 +1,8 @@
 package bg.softuni.pathfinder.service.impl;
 
 import bg.softuni.pathfinder.model.User;
-import bg.softuni.pathfinder.model.dto.UserLoginDTO;
-import bg.softuni.pathfinder.model.dto.UserRegisterDTO;
+import bg.softuni.pathfinder.model.dto.UserLoginBindingModel;
+import bg.softuni.pathfinder.model.dto.UserRegisterBindingModel;
 import bg.softuni.pathfinder.repository.UserRepository;
 import bg.softuni.pathfinder.service.AuthenticationService;
 import bg.softuni.pathfinder.service.session.LoggedUser;
@@ -27,33 +27,40 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void register(UserRegisterDTO userRegisterDTO) {
-        User user = modelMapper.map(userRegisterDTO, User.class);
-        user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+    public boolean register(UserRegisterBindingModel userRegisterBindingModel) {
+        if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
+            return false;
+        }
+
+        boolean existByUsernameOrEmail = userRepository.existsByUsernameOrEmail(
+                userRegisterBindingModel.getUsername(), userRegisterBindingModel.getEmail()
+        );
+
+        if (existByUsernameOrEmail) {
+            return false;
+        }
+
+        User user = modelMapper.map(userRegisterBindingModel, User.class);
+        user.setPassword(passwordEncoder.encode(userRegisterBindingModel.getPassword()));
+
         userRepository.save(user);
+
+        return true;
     }
 
     @Override
-    public boolean login(UserLoginDTO userLoginDTO) {
-        String username = userLoginDTO.getUsername();
-        User user = this.userRepository.findByUsername(userLoginDTO.getUsername());
+    public boolean login(UserLoginBindingModel userLoginBindingModel) {
+        String username = userLoginBindingModel.getUsername();
+        User user = this.userRepository.findByUsername(username);
 
-        if (user == null) {
-            throw new IllegalArgumentException("User with that username:" + username + " is not present");
+        if (user != null && passwordEncoder.matches(userLoginBindingModel.getPassword(), user.getPassword())) {
+            loggedUser.setUsername(user.getUsername());
+            loggedUser.setLogged(true);
+
+            return true;
         }
 
-        boolean passwordMatch = passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword());
-
-        if (!passwordMatch) {
-            throw new IllegalArgumentException("User entered incorrect password");
-        }
-
-        loggedUser.setUsername(user.getUsername());
-        loggedUser.setEmail(user.getEmail());
-        loggedUser.setFullName(user.getFullName());
-        loggedUser.setLogged(true);
-
-        return passwordMatch;
+        return false;
     }
 
     @Override

@@ -5,7 +5,7 @@ import bg.softuni.pathfinder.model.enums.Level;
 
 import java.util.Set;
 
-public class AddRouteDTO {
+public class AddRouteBindingModel {
     private String name;
     private String description;
     private Level level;

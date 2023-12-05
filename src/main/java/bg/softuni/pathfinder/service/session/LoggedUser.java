@@ -1,14 +1,23 @@
 package bg.softuni.pathfinder.service.session;
 
+import bg.softuni.pathfinder.model.Role;
+import bg.softuni.pathfinder.model.enums.UserRole;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class LoggedUser {
 
     private String username;
-    private String email;
-    private String fullName;
+    private Set<Role> roles;
     private boolean isLogged;
+
+    public LoggedUser() {
+        this.roles = new HashSet<>();
+    }
 
     public String getUsername() {
         return username;
@@ -18,34 +27,32 @@ public class LoggedUser {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public LoggedUser setRoles(Set<Role> roles) {
+        this.roles = roles;
+        return this;
     }
 
     public boolean isLogged() {
         return isLogged;
     }
 
-    public void setLogged(boolean logged) {
+    public LoggedUser setLogged(boolean logged) {
         isLogged = logged;
+        return this;
     }
 
     public void reset() {
         setUsername(null);
-        setEmail(null);
-        setFullName(null);
+        setRoles(Collections.emptySet());
         setLogged(false);
+    }
+
+    public boolean isAdmin() {
+        return this.roles.stream()
+                .anyMatch(role -> role.getName().equals(UserRole.ADMIN));
     }
 }

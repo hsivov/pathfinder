@@ -1,8 +1,9 @@
 package bg.softuni.pathfinder.model.dto;
 
-public class UserLoginDTO {
+public class UserLoginBindingModel {
 
     private String username;
+
     private String password;
 
     public String getUsername() {

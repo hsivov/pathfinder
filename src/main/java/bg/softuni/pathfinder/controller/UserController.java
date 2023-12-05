@@ -1,10 +1,14 @@
 package bg.softuni.pathfinder.controller;
 
-import bg.softuni.pathfinder.model.dto.UserLoginDTO;
-import bg.softuni.pathfinder.model.dto.UserRegisterDTO;
+import bg.softuni.pathfinder.model.dto.UserLoginBindingModel;
+import bg.softuni.pathfinder.model.dto.UserProfileViewModel;
+import bg.softuni.pathfinder.model.dto.UserRegisterBindingModel;
 import bg.softuni.pathfinder.service.AuthenticationService;
+import bg.softuni.pathfinder.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,9 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
 
     private final AuthenticationService authenticationService;
+    private final UserService userService;
 
-    public UserController(AuthenticationService authenticationService) {
+    public UserController(AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService;
+        this.userService = userService;
     }
 
     @GetMapping("/login")
@@ -25,14 +31,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(UserLoginDTO userLoginDTO) {
-        boolean isLogged = authenticationService.login(userLoginDTO);
+    public ModelAndView login(UserLoginBindingModel userLoginBindingModel) {
+        boolean hasSuccessfulLogin = authenticationService.login(userLoginBindingModel);
 
-        if (isLogged) {
-            return new ModelAndView("redirect:/");
+        if (!hasSuccessfulLogin) {
+            ModelAndView modelAndView = new ModelAndView("login");
+            modelAndView.addObject("hasLoginError", true);
+
+            return modelAndView;
         }
 
-        return new ModelAndView("login");
+        return new ModelAndView("redirect:/");
     }
 
     @GetMapping("/register")
@@ -41,10 +50,24 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ModelAndView register(UserRegisterDTO userRegisterDTO) {
+    public ModelAndView register(@ModelAttribute("userRegisterBindingModel") @Valid UserRegisterBindingModel userRegisterBindingModel) {
 
-        authenticationService.register(userRegisterDTO);
+        boolean hasSuccessfulRegistration = authenticationService.register(userRegisterBindingModel);
+
+        if (!hasSuccessfulRegistration) {
+            return new ModelAndView("register");
+        }
+
         return new ModelAndView("redirect:login");
+    }
+
+    @GetMapping("/profile")
+    public ModelAndView profile() {
+        UserProfileViewModel userProfileViewModel = userService.getUserProfile();
+        ModelAndView modelAndView = new ModelAndView("profile");
+        modelAndView.addObject("userProfileViewModel", userProfileViewModel);
+
+        return modelAndView;
     }
 
     @GetMapping("/logout")
