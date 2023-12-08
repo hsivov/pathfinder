@@ -3,90 +3,143 @@ package bg.softuni.pathfinder.model;
 import bg.softuni.pathfinder.model.enums.Level;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "routes")
 public class Route extends BaseEntity{
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    @Column(columnDefinition = "LONGTEXT")
+
+    @Column(name = "gpx_coordinates", columnDefinition = "LONGTEXT")
     private String gpxCoordinates;
+
     @Enumerated(EnumType.STRING)
     private Level level;
-    @Column(nullable = false)
+
+    @Column(name = "name", nullable = false)
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private User author;
+
+    @Column(name = "video_url")
     private String videoUrl;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @ManyToOne
+    private User author;
 
     @ManyToMany
     private Set<Category> categories;
 
-    public Route() {
+    @OneToMany(mappedBy = "route")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "route")
+    private List<Picture> pictures;
+
+
+    public Route () {
         this.categories = new HashSet<>();
+        this.comments = new ArrayList<>();
+        this.pictures = new ArrayList<>();
     }
 
-    public String getDescription() {
+    public String getDescription () {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Route setDescription (String description) {
         this.description = description;
+        return this;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public String getGpxCoordinates() {
+    public String getGpxCoordinates () {
         return gpxCoordinates;
     }
 
-    public void setGpxCoordinates(String gpxCoordinates) {
+    public Route setGpxCoordinates (String gpxCoordinates) {
         this.gpxCoordinates = gpxCoordinates;
+        return this;
     }
 
-    public Level getLevel() {
+    public Level getLevel () {
         return level;
     }
 
-    public void setLevel(Level level) {
+    public Route setLevel (Level level) {
         this.level = level;
+        return this;
     }
 
-    public String getName() {
+    public String getName () {
         return name;
     }
 
-    public void setName(String name) {
+    public Route setName (String name) {
         this.name = name;
+        return this;
     }
 
-    public String getVideoUrl() {
+    public User getAuthor () {
+        return author;
+    }
+
+    public Route setAuthor (User author) {
+        this.author = author;
+        return this;
+    }
+
+    public String getVideoUrl () {
         return videoUrl;
     }
 
-    public void setVideoUrl(String videoUrl) {
+    public Route setVideoUrl (String videoUrl) {
         this.videoUrl = videoUrl;
+        return this;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void addCategories(Set<Category> categories) {
+    public Route setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public Set<Category> getCategories () {
+        return categories;
+    }
+
+    public Route setCategories (Set<Category> categories) {
+        this.categories = categories;
+        return this;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public Route setComments(List<Comment> comments) {
+        this.comments = comments;
+        return this;
+    }
+
+    public List<Picture> getPictures() {
+        return pictures;
+    }
+
+    public Route setPictures(List<Picture> pictures) {
+        this.pictures = pictures;
+        return this;
+    }
+
+    public void addCategories (Set<Category> categories) {
         this.categories.addAll(categories);
     }
 }

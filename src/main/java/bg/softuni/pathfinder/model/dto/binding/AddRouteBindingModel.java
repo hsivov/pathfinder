@@ -1,5 +1,6 @@
-package bg.softuni.pathfinder.model.dto;
+package bg.softuni.pathfinder.model.dto.binding;
 
+import bg.softuni.pathfinder.model.User;
 import bg.softuni.pathfinder.model.enums.CategoryName;
 import bg.softuni.pathfinder.model.enums.Level;
 
@@ -11,6 +12,7 @@ public class AddRouteBindingModel {
     private Level level;
     private String videoUrl;
     private Set<CategoryName> categories;
+    private User author;
 
     public String getName() {
         return name;
@@ -50,5 +52,13 @@ public class AddRouteBindingModel {
 
     public void setCategories(Set<CategoryName> categories) {
         this.categories = categories;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

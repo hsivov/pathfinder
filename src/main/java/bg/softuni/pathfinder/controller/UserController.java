@@ -1,8 +1,8 @@
 package bg.softuni.pathfinder.controller;
 
-import bg.softuni.pathfinder.model.dto.UserLoginBindingModel;
-import bg.softuni.pathfinder.model.dto.UserProfileViewModel;
-import bg.softuni.pathfinder.model.dto.UserRegisterBindingModel;
+import bg.softuni.pathfinder.model.dto.binding.UserLoginBindingModel;
+import bg.softuni.pathfinder.model.dto.view.UserProfileViewModel;
+import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
 import bg.softuni.pathfinder.service.AuthenticationService;
 import bg.softuni.pathfinder.service.UserService;
 import jakarta.validation.Valid;

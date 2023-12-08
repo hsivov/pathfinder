@@ -1,7 +1,7 @@
 package bg.softuni.pathfinder.service.impl;
 
 import bg.softuni.pathfinder.model.User;
-import bg.softuni.pathfinder.model.dto.UserProfileViewModel;
+import bg.softuni.pathfinder.model.dto.view.UserProfileViewModel;
 import bg.softuni.pathfinder.repository.UserRepository;
 import bg.softuni.pathfinder.service.UserService;
 import bg.softuni.pathfinder.service.session.LoggedUser;

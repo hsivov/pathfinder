@@ -1,4 +1,4 @@
-package bg.softuni.pathfinder.model.dto;
+package bg.softuni.pathfinder.model.dto.binding;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

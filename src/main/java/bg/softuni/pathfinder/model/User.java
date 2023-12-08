@@ -80,15 +80,17 @@ public class User extends BaseEntity {
         return level;
     }
 
-    public void setLevel(Level level) {
+    public User setLevel(Level level) {
         this.level = level;
+        return this;
     }
 
     public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public User setRoles(Set<Role> roles) {
         this.roles = roles;
+        return this;
     }
 }

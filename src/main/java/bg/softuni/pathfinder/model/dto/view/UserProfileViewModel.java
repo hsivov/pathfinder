@@ -1,4 +1,4 @@
-package bg.softuni.pathfinder.model.dto;
+package bg.softuni.pathfinder.model.dto.view;
 
 import bg.softuni.pathfinder.model.enums.Level;
 
