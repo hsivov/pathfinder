@@ -26,7 +26,7 @@
 <div class="row justify-content-center ">
     <form id="add-route-form" class="w-50 rounded text-white mt-5"
           th:action="@{/routes/add}"
-          th:method="POST" enctype="multipart/form-data">
+          th:method="POST" enctype="multipart/form-data" th:object="${addRouteBindingModel}">
 
         <h3 class="border-left border-light pl-2">Add a new route</h3>
         <div>
@@ -34,14 +34,14 @@
                 <label for="inputName" class="col-form-label ">Name</label>
             </div>
             <div class="form-group">
-                <input name="name" 
-                       required minlength="5" maxlength="20"
+                <input th:field="*{name}"
                        type="text"
                        id="inputName"
                        class="form-control"
-                       aria-describedby="inputNameError">
-                <small id="inputNameError"
-                       class="invalid-feedback bg-danger rounded">Name length must be more than 3 characters</small>
+                       aria-describedby="inputNameError"
+                       th:errorclass="'is-invalid alert-danger'">
+                <small th:errors="*{name}" id="inputNameError"
+                       class="invalid-feedback">Name length must be more than 3 characters</small>
 
             </div>
         </div>
@@ -51,13 +51,13 @@
                 <label for="inputDescription" class="col-form-label ">Description</label>
             </div>
             <div class="form-group">
-                    <textarea name="description" 
-                              required minlength="5"
+                    <textarea th:field="*{description}"
                               id="inputDescription"
                               class="form-control"
-                              aria-describedby="inputDescriptionError"></textarea>
-                <small id="inputDescriptionError"
-                       class="invalid-feedback  form-text bg-danger rounded">Description length must be more than 5
+                              aria-describedby="inputDescriptionError"
+                              th:errorclass="'is-invalid alert-danger'"></textarea>
+                <small th:errors="*{description}" id="inputDescriptionError"
+                       class="form-text invalid-feedback">Description length must be more than 5
                     characters</small>
             </div>
         </div>
@@ -80,7 +80,10 @@
                 <label for="level">Level</label>
                 <select id="level" name="level" class="custom-select">
                     <option value="" selected disabled>Select level</option>
-                    <option th:each="level : ${levels}" th:text="${level}" th:value="${level}"></option>
+                    <option th:each="level : ${levels}"
+                            th:text="${level}"
+                            th:value="${level}">
+                    </option>
                 </select>
             </div>
         </div>
@@ -88,7 +91,7 @@
 
             <div class="form-group">
                 <label for="videoUrl">Video Url (only last eleven characters from YouTube)</label>
-                <input id="videoUrl" name="videoUrl" type="text"
+                <input id="videoUrl" th:field="*{videoUrl}" type="text"
                        class="form-control" placeholder="Video url">
             </div>
         </div>
@@ -96,7 +99,7 @@
         <div>
             <div class="form-group p-3">
                 <label class="p-2" for="categories">Categories:</label>
-                <input class="m-3" type="checkbox" name="categories" id="categories"
+                <input class="m-3" type="checkbox" th:field="*{categories}" id="categories"
                        th:each="category : ${categories}" th:value="${category}" th:text="${category}">
 				<br>
             </div>

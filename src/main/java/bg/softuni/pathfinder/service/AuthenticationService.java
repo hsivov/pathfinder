@@ -9,4 +9,6 @@ public interface AuthenticationService {
     boolean login(UserLoginBindingModel userLoginBindingModel);
 
     void logout();
+
+    boolean isUniqueUsername(UserRegisterBindingModel userRegisterBindingModel);
 }

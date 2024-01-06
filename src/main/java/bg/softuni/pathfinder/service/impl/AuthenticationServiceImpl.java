@@ -15,7 +15,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
     private final PasswordEncoder passwordEncoder;
     private final LoggedUser loggedUser;
 
@@ -61,6 +60,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean isUniqueUsername(UserRegisterBindingModel userRegisterBindingModel) {
+        return userRepository.findByUsername(userRegisterBindingModel.getUsername()) == null;
     }
 
     @Override

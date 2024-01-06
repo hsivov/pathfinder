@@ -7,6 +7,7 @@ import bg.softuni.pathfinder.service.AuthenticationService;
 import bg.softuni.pathfinder.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,12 +46,25 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public ModelAndView register() {
+    public ModelAndView register(@ModelAttribute("userRegisterBindingModel") UserRegisterBindingModel userRegisterBindingModel) {
         return new ModelAndView("register");
     }
 
     @PostMapping("/register")
-    public ModelAndView register(@ModelAttribute("userRegisterBindingModel") @Valid UserRegisterBindingModel userRegisterBindingModel) {
+    public ModelAndView register(@ModelAttribute("userRegisterBindingModel") @Valid UserRegisterBindingModel userRegisterBindingModel,
+                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("register");
+        }
+
+        boolean isUniqueUsername = authenticationService.isUniqueUsername(userRegisterBindingModel);
+
+        if (!isUniqueUsername) {
+            ModelAndView modelAndView = new ModelAndView("register");
+            modelAndView.addObject("usernameOccupied", true);
+
+            return modelAndView;
+        }
 
         boolean hasSuccessfulRegistration = authenticationService.register(userRegisterBindingModel);
 
