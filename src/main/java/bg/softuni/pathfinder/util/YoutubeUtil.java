@@ -10,7 +10,7 @@ public class YoutubeUtil {
 
         Matcher matcher = compile.matcher(fullVideoUrl);
         if (matcher.find()) {
-            return  matcher.group(1);
+            return matcher.group(1);
         }
 
         return null;

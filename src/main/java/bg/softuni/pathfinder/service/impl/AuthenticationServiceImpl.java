@@ -40,7 +40,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         User user = modelMapper.map(userRegisterBindingModel, User.class);
-        user.setPassword(passwordEncoder.encode(userRegisterBindingModel.getPassword()));
 
         userRepository.save(user);
 

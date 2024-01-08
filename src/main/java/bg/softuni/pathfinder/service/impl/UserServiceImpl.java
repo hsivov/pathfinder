@@ -21,11 +21,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getLoggedUser() {
-        return userRepository.findByUsername(loggedUser.getUsername());
-    }
-
-    @Override
     public UserProfileViewModel getUserProfile() {
         User user = userRepository.findByUsername(loggedUser.getUsername());
 
