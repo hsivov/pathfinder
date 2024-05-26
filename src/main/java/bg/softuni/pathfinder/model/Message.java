@@ -1,30 +1,31 @@
 package bg.softuni.pathfinder.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "messages")
 public class Message extends BaseEntity {
 
     @Column(nullable = false)
-    private LocalDateTime dateTime;
+    private Instant dateTime;
     @Column(columnDefinition = "TEXT", nullable = false)
     private String textContent;
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    @ManyToOne(optional = false)
     private User author;
-    @ManyToOne
-    @JoinColumn(name = "recipient_id")
+    @ManyToOne(optional = false)
     private User recipient;
 
 
-    public LocalDateTime getDateTime() {
+    public Instant getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(Instant dateTime) {
         this.dateTime = dateTime;
     }
 

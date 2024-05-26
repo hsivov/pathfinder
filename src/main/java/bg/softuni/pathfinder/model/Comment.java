@@ -2,22 +2,22 @@ package bg.softuni.pathfinder.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "comments")
 public class Comment extends BaseEntity{
 
+    @Column(nullable = false)
     private Boolean approved;
-    private LocalDateTime created;
+    private Instant created;
     @Column(columnDefinition = "TEXT", nullable = false)
     private String textContent;
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+
+    @ManyToOne(optional = false)
     private User author;
 
-    @ManyToOne
-    @JoinColumn(name = "route_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Route route;
 
 
@@ -29,11 +29,11 @@ public class Comment extends BaseEntity{
         this.approved = approved;
     }
 
-    public LocalDateTime getCreated() {
+    public Instant getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Instant created) {
         this.created = created;
     }
 

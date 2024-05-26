@@ -7,13 +7,11 @@ import jakarta.persistence.*;
 public class Picture extends BaseEntity{
 
     private String title;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String url;
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    @ManyToOne(optional = false)
     private User author;
-    @ManyToOne
-    @JoinColumn(name = "route_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Route route;
 
 

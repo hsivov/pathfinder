@@ -3,9 +3,7 @@ package bg.softuni.pathfinder.model;
 import bg.softuni.pathfinder.model.enums.Level;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,16 +35,16 @@ public class Route extends BaseEntity{
     private Set<Category> categories;
 
     @OneToMany(mappedBy = "route")
-    private List<Comment> comments;
+    private Set<Comment> comments;
 
     @OneToMany(mappedBy = "route")
-    private List<Picture> pictures;
+    private Set<Picture> pictures;
 
 
     public Route () {
         this.categories = new HashSet<>();
-        this.comments = new ArrayList<>();
-        this.pictures = new ArrayList<>();
+        this.comments = new HashSet<>();
+        this.pictures = new HashSet<>();
     }
 
     public String getDescription () {
@@ -121,20 +119,20 @@ public class Route extends BaseEntity{
         return this;
     }
 
-    public List<Comment> getComments() {
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public Route setComments(List<Comment> comments) {
+    public Route setComments(Set<Comment> comments) {
         this.comments = comments;
         return this;
     }
 
-    public List<Picture> getPictures() {
+    public Set<Picture> getPictures() {
         return pictures;
     }
 
-    public Route setPictures(List<Picture> pictures) {
+    public Route setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
         return this;
     }

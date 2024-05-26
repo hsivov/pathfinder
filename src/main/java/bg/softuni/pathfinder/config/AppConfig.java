@@ -4,9 +4,9 @@ import bg.softuni.pathfinder.exeptions.RouteNotFoundException;
 import bg.softuni.pathfinder.model.*;
 import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.dto.binding.CreateCommentBindingModel;
+import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
 import bg.softuni.pathfinder.model.dto.view.PictureViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteCategoryViewModel;
-import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
 import bg.softuni.pathfinder.model.enums.CategoryName;
 import bg.softuni.pathfinder.model.enums.Level;
 import bg.softuni.pathfinder.repository.RouteRepository;
@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 
@@ -111,7 +111,7 @@ public class AppConfig {
 
             Comment comment = new Comment();
             comment.setRoute(route);
-            comment.setCreated(LocalDateTime.now());
+            comment.setCreated(Instant.now());
             comment.setAuthor(user);
 
             return comment;
