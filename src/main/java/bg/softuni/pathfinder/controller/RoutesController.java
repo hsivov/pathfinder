@@ -1,6 +1,7 @@
 package bg.softuni.pathfinder.controller;
 
 import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
+import bg.softuni.pathfinder.model.dto.binding.UploadRoutePictureBindingModel;
 import bg.softuni.pathfinder.model.dto.view.RouteDetailsViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteGetAllViewModel;
 import bg.softuni.pathfinder.model.enums.CategoryName;
@@ -83,5 +84,12 @@ public class RoutesController {
         }
 
         return modelAndView;
+    }
+
+    @PostMapping("/upload-picture")
+    public ModelAndView uploadPicture(@Valid UploadRoutePictureBindingModel uploadRoutePictureBindingModel) {
+        routeService.uploadPicture(uploadRoutePictureBindingModel);
+
+        return new ModelAndView("redirect:/routes");
     }
 }

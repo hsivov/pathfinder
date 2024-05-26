@@ -4,6 +4,7 @@ import bg.softuni.pathfinder.model.User;
 import bg.softuni.pathfinder.model.enums.CategoryName;
 import bg.softuni.pathfinder.model.enums.Level;
 import bg.softuni.pathfinder.validation.annotation.FileAnnotation;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,8 @@ public class AddRouteBindingModel {
     @FileAnnotation(contentTypes = "text/xml")
     private MultipartFile gpxCoordinates;
     private Level level;
+    @Pattern(regexp = "http(?:s?):\\/\\/(?:www\\.)?youtu(?:be\\.com\\/watch\\?v=|\\.be\\/)([\\w\\-\\_]*)(&(amp;)?\u200C\u200B[\\w\\?\u200C\u200B=]*)?",
+    message = "Invalid youtube url provided!")
     private String videoUrl;
     private Set<CategoryName> categories;
     private User author;

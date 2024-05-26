@@ -94,6 +94,8 @@
                 <label for="videoUrl">Video Url (only last eleven characters from YouTube)</label>
                 <input id="videoUrl" th:field="*{videoUrl}" type="text"
                        class="form-control" placeholder="Video url">
+                <small id="videoUrlError" th:errors="*{videoUrl}"
+                       class="text-danger"></small>
             </div>
         </div>
 

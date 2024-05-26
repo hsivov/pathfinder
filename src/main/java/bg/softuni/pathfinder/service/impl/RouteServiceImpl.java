@@ -2,14 +2,12 @@ package bg.softuni.pathfinder.service.impl;
 
 import bg.softuni.pathfinder.exeptions.RouteNotFoundException;
 import bg.softuni.pathfinder.model.Route;
-import bg.softuni.pathfinder.model.User;
 import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
+import bg.softuni.pathfinder.model.dto.binding.UploadRoutePictureBindingModel;
 import bg.softuni.pathfinder.model.dto.view.RouteDetailsViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteGetAllViewModel;
 import bg.softuni.pathfinder.repository.RouteRepository;
-import bg.softuni.pathfinder.repository.UserRepository;
 import bg.softuni.pathfinder.service.RouteService;
-import bg.softuni.pathfinder.service.UserService;
 import bg.softuni.pathfinder.service.session.LoggedUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,13 +18,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class RouteServiceImpl implements RouteService {
     private static final String BASE_GPX_COORDINATES_PATH = ".\\src\\main\\resources\\coordinates\\";
+    private static final String BASE_IMAGES_PATH = ".\\src\\main\\resources\\static\\images\\";
     private final RouteRepository routeRepository;
     private final ModelMapper modelMapper;
     private final LoggedUser loggedUser;
@@ -83,6 +81,44 @@ public class RouteServiceImpl implements RouteService {
                 .orElseThrow(() -> new RouteNotFoundException("Route with id: " + id + " was not found!"));
 
         return modelMapper.map(route, RouteDetailsViewModel.class);
+    }
+
+    @Override
+    public void uploadPicture(UploadRoutePictureBindingModel uploadRoutePictureBindingModel) {
+        MultipartFile pictureFile = uploadRoutePictureBindingModel.getPicture();
+
+        String picturePath = getPicturePath(pictureFile);
+
+        try {
+            File file = new File(BASE_IMAGES_PATH + picturePath);
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+
+            OutputStream outputStream = new FileOutputStream(file);
+            outputStream.write(pictureFile.getBytes());
+            outputStream.close();
+
+            Optional<Route> optionalRoute = routeRepository.findById(uploadRoutePictureBindingModel.getId());
+
+            if (optionalRoute.isPresent()) {
+                Route route = optionalRoute.get();
+                route.setImageUrl(picturePath);
+                routeRepository.save(route);
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private String getPicturePath(MultipartFile pictureFile) {
+        String[] splitPictureName = pictureFile.getOriginalFilename().split("\\.");
+        String extension = splitPictureName[splitPictureName.length - 1];
+
+        String pathPattern = "\\%s\\%s." + extension;
+
+        return String.format(pathPattern,
+                loggedUser.getUsername(),
+                UUID.randomUUID());
     }
 
     private String getFilePath(String routeName) {
