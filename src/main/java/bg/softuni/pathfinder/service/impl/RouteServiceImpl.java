@@ -1,6 +1,7 @@
 package bg.softuni.pathfinder.service.impl;
 
 import bg.softuni.pathfinder.exeptions.RouteNotFoundException;
+import bg.softuni.pathfinder.model.Picture;
 import bg.softuni.pathfinder.model.Route;
 import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.dto.binding.UploadRoutePictureBindingModel;
@@ -9,6 +10,7 @@ import bg.softuni.pathfinder.model.dto.view.RouteGetAllViewModel;
 import bg.softuni.pathfinder.repository.RouteRepository;
 import bg.softuni.pathfinder.service.RouteService;
 import bg.softuni.pathfinder.service.session.LoggedUser;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,11 +70,21 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
+    @Transactional
     public List<RouteGetAllViewModel> getAll() {
 
         return routeRepository.findAll().stream()
-                .map(route -> modelMapper.map(route, RouteGetAllViewModel.class))
+                .map(this::mapToGetPictures)
                 .toList();
+    }
+
+    private RouteGetAllViewModel mapToGetPictures(Route route) {
+        RouteGetAllViewModel dto = modelMapper.map(route, RouteGetAllViewModel.class);
+
+        Optional<Picture> first = route.getPictures().stream().findFirst();
+        dto.setImageUrl(first.get().getUrl());
+
+        return dto;
     }
 
     @Override
@@ -102,7 +114,7 @@ public class RouteServiceImpl implements RouteService {
 
             if (optionalRoute.isPresent()) {
                 Route route = optionalRoute.get();
-                route.setImageUrl(picturePath);
+      //          route.setImageUrl(picturePath);
                 routeRepository.save(route);
             }
         } catch (IOException e) {

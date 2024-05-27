@@ -25,9 +25,6 @@ public class Route extends BaseEntity{
     @Column(name = "video_url")
     private String videoUrl;
 
-    @Column(name = "image_url")
-    private String imageUrl;
-
     @ManyToOne
     private User author;
 
@@ -98,15 +95,6 @@ public class Route extends BaseEntity{
 
     public Route setVideoUrl (String videoUrl) {
         this.videoUrl = videoUrl;
-        return this;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public Route setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
         return this;
     }
 
