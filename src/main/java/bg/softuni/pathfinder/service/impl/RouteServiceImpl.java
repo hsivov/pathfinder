@@ -74,16 +74,15 @@ public class RouteServiceImpl implements RouteService {
     public List<RouteGetAllViewModel> getAll() {
 
         return routeRepository.findAll().stream()
-                .map(this::mapToGetPictures)
+                .map(this::getPicture)
                 .toList();
     }
 
-    private RouteGetAllViewModel mapToGetPictures(Route route) {
+    private RouteGetAllViewModel getPicture(Route route) {
         RouteGetAllViewModel dto = modelMapper.map(route, RouteGetAllViewModel.class);
 
         Optional<Picture> first = route.getPictures().stream().findFirst();
-        dto.setImageUrl(first.get().getUrl());
-
+        first.ifPresent(picture -> dto.setImageUrl(picture.getUrl()));
         return dto;
     }
 

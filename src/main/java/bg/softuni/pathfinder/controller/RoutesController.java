@@ -69,21 +69,18 @@ public class RoutesController {
     public ModelAndView add(@Valid AddRouteBindingModel addRouteBindingModel,
                             BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView();
-
         if (bindingResult.hasErrors()) {
             final String attributeName = "addRouteBindingModel";
             redirectAttributes
                     .addFlashAttribute(attributeName, addRouteBindingModel)
                     .addFlashAttribute(bindingResultPath + DOT + attributeName, bindingResult);
 
-            modelAndView.setViewName("redirect:add");
-        } else {
-            routeService.add(addRouteBindingModel);
-            modelAndView.setViewName("redirect:/");
-        }
+            return new ModelAndView("redirect:add");
+            }
 
-        return modelAndView;
+        routeService.add(addRouteBindingModel);
+
+        return new ModelAndView("redirect:/");
     }
 
     @PostMapping("/upload-picture")
