@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,16 +40,19 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public void add(AddRouteBindingModel addRouteBindingModel) {
+    public void add(AddRouteBindingModel addRouteBindingModel) throws IOException {
         Route route = modelMapper.map(addRouteBindingModel, Route.class);
 
-        String filePath = getFilePath(route.getName());
+//        String filePath = getFilePath(route.getName());
+//
+//        boolean isUploaded = uploadGpxCoordinates(addRouteBindingModel.getGpxCoordinates(), filePath);
+//
+//        if (isUploaded) {
+//            route.setGpxCoordinates(filePath);
+//        }
 
-        boolean isUploaded = uploadGpxCoordinates(addRouteBindingModel.getGpxCoordinates(), filePath);
-
-        if (isUploaded) {
-            route.setGpxCoordinates(filePath);
-        }
+        String content = new String(addRouteBindingModel.getGpxCoordinates().getBytes(), StandardCharsets.UTF_8);
+        route.setGpxCoordinates(content);
 
         routeRepository.save(route);
     }

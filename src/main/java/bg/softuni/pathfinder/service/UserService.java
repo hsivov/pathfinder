@@ -5,4 +5,6 @@ import bg.softuni.pathfinder.model.dto.view.UserProfileViewModel;
 public interface UserService {
 
     UserProfileViewModel getUserProfile();
+
+    UserProfileViewModel getUserById(Long id);
 }

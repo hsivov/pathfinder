@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -78,7 +79,11 @@ public class RoutesController {
             return new ModelAndView("redirect:add");
             }
 
-        routeService.add(addRouteBindingModel);
+        try {
+            routeService.add(addRouteBindingModel);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return new ModelAndView("redirect:/");
     }

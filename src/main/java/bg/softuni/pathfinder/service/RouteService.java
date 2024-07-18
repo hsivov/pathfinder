@@ -5,11 +5,12 @@ import bg.softuni.pathfinder.model.dto.binding.UploadRoutePictureBindingModel;
 import bg.softuni.pathfinder.model.dto.view.RouteDetailsViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteGetAllViewModel;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface RouteService {
 
-    void add(AddRouteBindingModel addRouteBindingModel);
+    void add(AddRouteBindingModel addRouteBindingModel) throws IOException;
 
     List<RouteGetAllViewModel> getAll();
 
