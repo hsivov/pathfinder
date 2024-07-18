@@ -1,5 +1,7 @@
 package bg.softuni.pathfinder.model.dto.binding;
 
+import bg.softuni.pathfinder.validation.annotation.UniqueEmail;
+import bg.softuni.pathfinder.validation.annotation.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -7,10 +9,12 @@ import jakarta.validation.constraints.Size;
 
 public class UserRegisterBindingModel {
     @Size(min = 3, message = "Username length must be more than 3 characters")
+    @UniqueUsername
     private String username;
     @Size(min = 3, message = "Full name length must be more than 3 characters")
     private String fullName;
     @Email
+    @UniqueEmail
     @NotBlank(message = "Must be valid email")
     private String email;
     @Positive(message = "Must be valid age")

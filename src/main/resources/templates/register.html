@@ -40,9 +40,6 @@
                         <small id="usernameError"
                                th:errors="*{username}" class="invalid-feedback">Username length must be more than 3 characters</small>
 
-                        <small id="usernameUniqueError" th:if="${usernameOccupied}" th:text="'Username is already occupied'"
-                               class="bg-danger rounded">Username is already occupied</small>
-
                     </div>
                 </div>
 

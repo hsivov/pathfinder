@@ -8,7 +8,9 @@ public interface AuthenticationService {
 
     boolean login(UserLoginBindingModel userLoginBindingModel);
 
-    void logout();
+    boolean isUsernameUnique(String username);
 
-    boolean isUniqueUsername(UserRegisterBindingModel userRegisterBindingModel);
+    boolean isEmailUnique(String email);
+
+    void logout();
 }

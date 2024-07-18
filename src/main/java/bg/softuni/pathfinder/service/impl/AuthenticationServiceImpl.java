@@ -31,14 +31,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return false;
         }
 
-        boolean existByUsernameOrEmail = userRepository.existsByUsernameOrEmail(
-                userRegisterBindingModel.getUsername(), userRegisterBindingModel.getEmail()
-        );
-
-        if (existByUsernameOrEmail) {
-            return false;
-        }
-
         User user = modelMapper.map(userRegisterBindingModel, User.class);
 
         userRepository.save(user);
@@ -62,8 +54,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public boolean isUniqueUsername(UserRegisterBindingModel userRegisterBindingModel) {
-        return userRepository.findByUsername(userRegisterBindingModel.getUsername()) == null;
+    public boolean isUsernameUnique(String username) {
+        return userRepository.findByUsername(username) == null;
+    }
+
+    @Override
+    public boolean isEmailUnique(String email) {
+        return userRepository.findByEmail(email) == null;
     }
 
     @Override

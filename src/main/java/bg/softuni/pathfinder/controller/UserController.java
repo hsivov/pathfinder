@@ -63,15 +63,6 @@ public class UserController {
             return new ModelAndView("register");
         }
 
-        boolean isUniqueUsername = authenticationService.isUniqueUsername(userRegisterBindingModel);
-
-        if (!isUniqueUsername) {
-            ModelAndView modelAndView = new ModelAndView("register");
-            modelAndView.addObject("usernameOccupied", true);
-
-            return modelAndView;
-        }
-
         boolean hasSuccessfulRegistration = authenticationService.register(userRegisterBindingModel);
 
         if (!hasSuccessfulRegistration) {
