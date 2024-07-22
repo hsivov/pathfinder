@@ -1,6 +1,5 @@
 package bg.softuni.pathfinder.controller;
 
-import bg.softuni.pathfinder.model.dto.binding.UserLoginBindingModel;
 import bg.softuni.pathfinder.model.dto.view.UserProfileViewModel;
 import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
 import bg.softuni.pathfinder.service.AuthenticationService;
@@ -30,20 +29,6 @@ public class UserController {
     @GetMapping("/login")
     public ModelAndView login() {
         return new ModelAndView("login");
-    }
-
-    @PostMapping("/login")
-    public ModelAndView login(UserLoginBindingModel userLoginBindingModel) {
-        boolean hasSuccessfulLogin = authenticationService.login(userLoginBindingModel);
-
-        if (!hasSuccessfulLogin) {
-            ModelAndView modelAndView = new ModelAndView("login");
-            modelAndView.addObject("hasLoginError", true);
-
-            return modelAndView;
-        }
-
-        return new ModelAndView("redirect:/");
     }
 
     @GetMapping("/register")
@@ -79,12 +64,5 @@ public class UserController {
         modelAndView.addObject("userProfileViewModel", userProfileViewModel);
 
         return modelAndView;
-    }
-
-    @GetMapping("/logout")
-    public ModelAndView logout() {
-        this.authenticationService.logout();
-
-        return new ModelAndView("redirect:/");
     }
 }

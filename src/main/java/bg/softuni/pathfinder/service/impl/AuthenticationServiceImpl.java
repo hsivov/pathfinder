@@ -5,7 +5,6 @@ import bg.softuni.pathfinder.model.dto.binding.UserLoginBindingModel;
 import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
 import bg.softuni.pathfinder.repository.UserRepository;
 import bg.softuni.pathfinder.service.AuthenticationService;
-import bg.softuni.pathfinder.service.session.LoggedUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,14 +14,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final PasswordEncoder passwordEncoder;
-    private final LoggedUser loggedUser;
 
-    public AuthenticationServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, LoggedUser loggedUser) {
+    public AuthenticationServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.loggedUser = loggedUser;
     }
 
     @Override
@@ -39,21 +34,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public boolean login(UserLoginBindingModel userLoginBindingModel) {
-        String username = userLoginBindingModel.getUsername();
-        User user = this.userRepository.findByUsername(username);
-
-        if (user != null && passwordEncoder.matches(userLoginBindingModel.getPassword(), user.getPassword())) {
-            loggedUser.setUsername(user.getUsername());
-            loggedUser.setLogged(true);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
     public boolean isUsernameUnique(String username) {
         return userRepository.findByUsername(username) == null;
     }
@@ -63,8 +43,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userRepository.findByEmail(email) == null;
     }
 
-    @Override
-    public void logout() {
-        loggedUser.reset();
-    }
 }

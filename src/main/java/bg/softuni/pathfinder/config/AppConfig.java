@@ -13,7 +13,6 @@ import bg.softuni.pathfinder.repository.RouteRepository;
 import bg.softuni.pathfinder.repository.UserRepository;
 import bg.softuni.pathfinder.service.CategoryService;
 import bg.softuni.pathfinder.service.RoleService;
-import bg.softuni.pathfinder.service.session.LoggedUser;
 import bg.softuni.pathfinder.util.YoutubeUtil;
 import org.modelmapper.Conditions;
 import org.modelmapper.Converter;
@@ -21,6 +20,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.Provider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
@@ -31,14 +31,12 @@ import java.util.Set;
 @Configuration
 public class AppConfig {
 
-    private final LoggedUser loggedUser;
     private final UserRepository userRepository;
     private final RouteRepository routeRepository;
     private final CategoryService categoryService;
     private final RoleService roleService;
 
-    public AppConfig(LoggedUser loggedUser, UserRepository userRepository, RouteRepository routeRepository, CategoryService categoryService, RoleService roleService) {
-        this.loggedUser = loggedUser;
+    public AppConfig(UserRepository userRepository, RouteRepository routeRepository, CategoryService categoryService, RoleService roleService) {
         this.userRepository = userRepository;
         this.routeRepository = routeRepository;
         this.categoryService = categoryService;
@@ -51,7 +49,7 @@ public class AppConfig {
         final ModelMapper modelMapper = new ModelMapper();
 
         //AddRouteBindingModel -> Route
-        Provider<User> loggedUserProvider = req -> getLoggedUser();
+        Provider<User> loggedUserProvider = req -> new User(); //getLoggedUser();
         Provider<String> youtubeSubUrlProvider = req -> YoutubeUtil.getUrl((String) req.getSource());
 
         Converter<Set<CategoryName>, Set<Category>> toEntitySet
@@ -106,13 +104,13 @@ public class AppConfig {
                 throw new RouteNotFoundException("Route not found");
             }
 
-            User user = userRepository.findByUsername(loggedUser.getUsername());
+            //User user = userRepository.findByUsername(loggedUser.getUsername());
             Route route = optionalRoute.get();
 
             Comment comment = new Comment();
             comment.setRoute(route);
             comment.setCreated(Instant.now());
-            comment.setAuthor(user);
+            //comment.setAuthor(user);
 
             return comment;
         };
@@ -134,11 +132,6 @@ public class AppConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
-    }
-
-    private User getLoggedUser() {
-        final String username = loggedUser.getUsername();
-        return userRepository.findByUsername(username);
+        return new BCryptPasswordEncoder();
     }
 }

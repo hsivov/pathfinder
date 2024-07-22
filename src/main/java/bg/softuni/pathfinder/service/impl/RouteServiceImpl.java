@@ -9,7 +9,6 @@ import bg.softuni.pathfinder.model.dto.view.RouteDetailsViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteGetAllViewModel;
 import bg.softuni.pathfinder.repository.RouteRepository;
 import bg.softuni.pathfinder.service.RouteService;
-import bg.softuni.pathfinder.service.session.LoggedUser;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -30,13 +29,10 @@ public class RouteServiceImpl implements RouteService {
     private static final String BASE_IMAGES_PATH = ".\\src\\main\\resources\\static\\images\\";
     private final RouteRepository routeRepository;
     private final ModelMapper modelMapper;
-    private final LoggedUser loggedUser;
 
-    public RouteServiceImpl(RouteRepository routeRepository, ModelMapper modelMapper,
-                            LoggedUser loggedUser) {
+    public RouteServiceImpl(RouteRepository routeRepository, ModelMapper modelMapper) {
         this.routeRepository = routeRepository;
         this.modelMapper = modelMapper;
-        this.loggedUser = loggedUser;
     }
 
     @Override
@@ -132,7 +128,7 @@ public class RouteServiceImpl implements RouteService {
         String pathPattern = "\\%s\\%s." + extension;
 
         return String.format(pathPattern,
-                loggedUser.getUsername(),
+                "logged user",
                 UUID.randomUUID());
     }
 
@@ -140,7 +136,7 @@ public class RouteServiceImpl implements RouteService {
         String pathPattern = "%s\\%s_%s.xml";
 
         return String.format(pathPattern,
-                loggedUser.getUsername(),
+                "logged user",
                 transformRouteName(routeName),
                 UUID.randomUUID());
     }

@@ -6,11 +6,7 @@ import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
 public interface AuthenticationService {
     boolean register(UserRegisterBindingModel userRegisterBindingModel);
 
-    boolean login(UserLoginBindingModel userLoginBindingModel);
-
     boolean isUsernameUnique(String username);
 
     boolean isEmailUnique(String email);
-
-    void logout();
 }
